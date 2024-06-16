@@ -8,8 +8,8 @@ GAME_NAME = "Minecraft Sweeper"
 FPS = 60
 WINDOW_SIZE = (1280, 720)
 
-BOARD_SIZE = (8, 8)
-MINE_COUNT = 5
+BOARD_SIZE = (9, 9)
+MINE_COUNT = 10
 
 MAIN_BOARD_PERCENTAGE = 0.8
 
@@ -205,8 +205,8 @@ def button_click_event(x, y, button):
 
     xx, yy = convert_pos_to_square(x, y)
 
-    idx_x = int(xx)
-    idx_y = int(yy)
+    idx_x = math.floor(xx)
+    idx_y = math.floor(yy)
 
     if (xx - idx_x - 1 / 2) > 0.45 or (yy - idx_y - 1 / 2) > 0.45:
         return
@@ -235,17 +235,6 @@ def button_click_event(x, y, button):
             open_safe_tiles(idx_x, idx_y)
             check_clear()
 
-            # 폭탄 주변의 닫혀 있는 칸으로 이동 (첫 번째 클릭 시에만 실행)
-            if is_first_mine:
-                for dx in range(-1, 2):
-                    for dy in range(-1, 2):
-                        nx, ny = idx_x + dx, idx_y + dy
-                        if 0 <= nx < BOARD_SIZE[0] and 0 <= ny < BOARD_SIZE[1] and game_board[nx][ny] == 1:
-                            for ddx in range(-1, 2):
-                                for ddy in range(-1, 2):
-                                    nnx, nny = nx + ddx, ny + ddy
-                                    if 0 <= nnx < BOARD_SIZE[0] and 0 <= nny < BOARD_SIZE[1] and game_board[nnx][nny] == 0:
-                                        button_click_event((nnx + 0.5) * SQUARE_SIZE + WINDOW_SIZE[0] / 2, (nny + 0.5) * SQUARE_SIZE + WINDOW_SIZE[1] / 2, 1)
 
     if button == 3:
         if game_board[idx_x][idx_y] == 1:
